@@ -9,6 +9,10 @@ pd = sp.pd
 def split_data(file):
     df = pd.read_excel(file)
     col = df["itemdescription"]
+    
+    # Replace '.' with '/' to handle both cases
+    col = col.str.replace(".", "/")
+    
     new_cols = col.str.split("/", expand=True)
     new_cols.rename(columns={0: "manufacturer", 1: "model", 2: "model number", 3: "storage capacity", 4: "color", 5: "carrier", 6: "network lock status", 7: "grade"}, inplace=True)
     df = pd.concat([df, new_cols], axis=1)
