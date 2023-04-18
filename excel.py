@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import streamlit_pandas as sp
 import os
 import base64
 
@@ -41,12 +42,28 @@ uploaded_file = st.file_uploader("Choose a file", type=["xlsx", "xls"])
 if uploaded_file is not None:
     st.write("Selected file:")
     st.write(uploaded_file.name)
-    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).xls"
+    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).csv"
 
     if st.button("Split Data"):
         df = split_data(uploaded_file)
         st.write(df.head())
         st.markdown(get_table_download_link(df, output_filename), unsafe_allow_html=True)
+
+        # Create widgets for filtering
+        create_data = {
+            "manufacturer": "text",
+            "model": "text",
+            "carrier": "text",
+            "type": "text",
+            "grade": "text",
+            "color": "text",
+            "network lock status": "text",
+        }
+        all_widgets = sp.create_widgets(df, create_data)
+        res = sp.filter_df(df, all_widgets)
+
+        st.header("Filtered DataFrame")
+        st.write(res)
 else:
     st.write("No file selected.")
 
