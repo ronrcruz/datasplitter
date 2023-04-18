@@ -1,4 +1,2 @@
 openpyxl
-pandas
-os
-base64
+stream-lit
