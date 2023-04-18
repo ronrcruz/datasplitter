@@ -44,7 +44,7 @@ uploaded_file = st.file_uploader("Choose a file", type=["xlsx", "xls"])
 if uploaded_file is not None:
     st.write("Selected file:")
     st.write(uploaded_file.name)
-    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).csv"
+    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).xls"
 
     if st.button("Split Data"):
         df = split_data(uploaded_file)
