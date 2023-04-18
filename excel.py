@@ -1,5 +1,4 @@
 import streamlit as st
-import pandas as pd
 import streamlit_pandas as sp
 import os
 import base64
@@ -44,7 +43,7 @@ uploaded_file = st.file_uploader("Choose a file", type=["xlsx", "xls"])
 if uploaded_file is not None:
     st.write("Selected file:")
     st.write(uploaded_file.name)
-    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).xls"
+    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).csv"
 
     if st.button("Split Data"):
         df = split_data(uploaded_file)
