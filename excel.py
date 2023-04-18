@@ -48,22 +48,6 @@ if uploaded_file is not None:
         df = split_data(uploaded_file)
         st.write(df.head())
         st.markdown(get_table_download_link(df, output_filename), unsafe_allow_html=True)
-
-        # Create widgets for filtering
-        create_data = {
-            "manufacturer": "text",
-            "model": "text",
-            "carrier": "text",
-            "type": "text",
-            "grade": "text",
-            "color": "text",
-            "network lock status": "text",
-        }
-        all_widgets = sp.create_widgets(df, create_data)
-        res = sp.filter_df(df, all_widgets)
-
-        st.header("Filtered DataFrame")
-        st.write(res)
 else:
     st.write("No file selected.")
 
