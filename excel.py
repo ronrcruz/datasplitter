@@ -4,6 +4,8 @@ import streamlit_pandas as sp
 import os
 import base64
 
+pd = sp.pd
+
 # Function to split the data
 def split_data(file):
     df = pd.read_excel(file)
