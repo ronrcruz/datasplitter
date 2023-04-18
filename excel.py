@@ -11,7 +11,8 @@ def split_data(file):
     col = df["itemdescription"]
     
     # Replace '.' with '/' to handle both cases
-    col = col.str.replace(".", "/")
+    replacements = {".": "/", "APPL": "Apple", "SAMS": "Samsung"}
+    col = col.replace(replacements, regex=True)
     
     new_cols = col.str.split("/", expand=True)
     new_cols.rename(columns={0: "manufacturer", 1: "model", 2: "model number", 3: "storage capacity", 4: "color", 5: "carrier", 6: "network lock status", 7: "grade"}, inplace=True)
