@@ -9,12 +9,21 @@ pd = sp.pd
 def split_data(file):
     df = pd.read_excel(file)
     col = df["itemdescription"]
+    warehouse_value = df.loc[0, "Warehouse"]
     
     # Replace '.' with '/' to handle both cases
     replacements = {".": "/", "APPL": "Apple", "SAMS": "Samsung"}
     col = col.replace(replacements, regex=True)
     
-    new_cols = col.str.split("/", expand=True)
+    if warehouse_value == "your_condition_1":
+        new_cols = col.str.split("/", expand=True)
+        # You can customize the splitting rules for this condition
+    elif warehouse_value == "your_condition_2":
+        new_cols = col.str.split("/", expand=True)
+        # You can customize the splitting rules for this condition
+    else:
+        new_cols = col.str.split("/", expand=True)
+
     new_cols.rename(columns={0: "manufacturer", 1: "model", 2: "model number", 3: "storage capacity", 4: "color", 5: "carrier", 6: "network lock status", 7: "grade"}, inplace=True)
     df = pd.concat([df, new_cols], axis=1)
 
@@ -48,7 +57,7 @@ uploaded_file = st.file_uploader("Choose a file", type=["xlsx", "xls"])
 if uploaded_file is not None:
     st.write("Selected file:")
     st.write(uploaded_file.name)
-    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).csv"
+    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).xls"
 
     if st.button("Split Data"):
         df = split_data(uploaded_file)
@@ -56,4 +65,3 @@ if uploaded_file is not None:
         st.markdown(get_table_download_link(df, output_filename), unsafe_allow_html=True)
 else:
     st.write("No file selected.")
-
