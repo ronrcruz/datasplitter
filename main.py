@@ -98,10 +98,13 @@ def split_data(file):
     return df
 
 def get_table_download_link(df, filename):
-    csv = df.to_csv(index=False)
-    b64 = base64.b64encode(csv.encode()).decode()
-    href = f'<a href="data:file/csv;base64,{b64}" download="{filename}">Download the output file</a>'
-    return href
+    excel_file = io.BytesIO()
+    writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
+    df.to_excel(writer, index=False, sheet_name="Sheet1")
+    writer.save()
+    excel_file.seek(0)
+    b64 = base64.b64encode(excel_file.read()).decode()
+    return f'<a href="data:application/octet-stream;base64,{b64}" download="{filename}">Download {filename}</a>'
 
 # Streamlit App
 st.title("Data Splitter")
@@ -111,7 +114,7 @@ uploaded_file = st.file_uploader("Choose a file", type=["xlsx", "xls"])
 if uploaded_file is not None:
     st.write("Selected file:")
     st.write(uploaded_file.name)
-    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).xls"
+    output_filename = os.path.splitext(uploaded_file.name)[0] + "(split).xlsx"
 
     if st.button("Split Data"):
         df = split_data(uploaded_file)
