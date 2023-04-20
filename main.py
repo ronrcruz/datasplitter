@@ -2,6 +2,7 @@ import streamlit as st
 import streamlit_pandas as sp
 import os
 import base64
+import io
 
 pd = sp.pd
 
