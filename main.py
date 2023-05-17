@@ -102,7 +102,7 @@ def get_table_download_link(df, filename):
     excel_file = io.BytesIO()
     writer = pd.ExcelWriter(excel_file, engine="xlsxwriter")
     df.to_excel(writer, index=False, sheet_name="Sheet1")
-    writer.save()
+    writer.close()
     excel_file.seek(0)
     b64 = base64.b64encode(excel_file.read()).decode()
     return f'<a href="data:application/octet-stream;base64,{b64}" download="{filename}">Download {filename}</a>'
